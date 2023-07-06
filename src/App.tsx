@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import TaskVews from "./Todo";
 import { observer } from "mobx-react-lite";
-import Todo from "./store/Todo";
+import { TasksStore } from "./store/TasksStore";
+import TodoItem from "./TaskItem";
+import { Tasks } from "./Tasks";
 
 function App() {
   const [text, setText] = useState("");
@@ -20,17 +21,20 @@ function App() {
       />
       <button
         onClick={() =>
-          Todo.addTask({
+          TasksStore.addTask({
             completed: false,
             description: text,
-            id: 0,
             subtasks: [],
           })
         }
       >
         Добавить новую задачу
       </button>
-      <TaskVews />
+      <Tasks
+        onComplete={(id) => TasksStore.completedTask(id)}
+        onDelete={(id) => TasksStore.removeTask(id)}
+        tasks={TasksStore.tasks}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 export class Task {
-  id: number;
+  id?: number;
   description: string;
   completed: boolean;
   subtasks: Task[];
@@ -29,16 +29,28 @@ class TaskList {
   }
 
   addTask(task: Task) {
+    const newId = this.tasks.length;
+    const newTask: Task = {
+      description: task.description,
+      completed: task.completed,
+      id: newId,
+      subtasks: task.subtasks,
+    };
     const currentTasks: Task[] = JSON.parse(
       localStorage.getItem("tasks") || "[]"
     );
-    this.tasks.push(task);
-    currentTasks.push(task);
+    this.tasks.push(newTask);
+    currentTasks.push(newTask);
     localStorage.setItem("tasks", JSON.stringify(currentTasks));
   }
 
   removeTask(id: number) {
+    const currentTasks: Task[] = JSON.parse(
+      localStorage.getItem("tasks") || "[]"
+    );
+    const updatedTasks = currentTasks.filter((task) => task.id !== id);
     this.tasks = this.tasks.filter((task) => task.id !== id);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
   completedTask(id: number) {
@@ -52,4 +64,4 @@ class TaskList {
   }
 }
 
-export default new TaskList();
+export const TasksStore = new TaskList();
