@@ -5,10 +5,6 @@ import { Tasks } from "./Tasks";
 import { Input } from "./Input";
 
 function App() {
-  /*function chengeCheckbox() {
-    setChecked(!checked);
-  }*/
-
   console.log(TasksStore.tasks);
 
   return (

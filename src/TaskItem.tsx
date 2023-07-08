@@ -13,23 +13,11 @@ export function TaskItem(props: Props) {
   const [text, setText] = useState("");
 
   return (
-    <div
-      className="taskItem"
-      style={{
-        border: "1px solid",
-        padding: 10,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: 20,
-          alignItems: "center",
-        }}
-      >
-        <p>{props.task.description}</p>
+    <div className="taskItem">
+      <div className="task">
+        <p className="taskDescription">{props.task.description}</p>
         <p>Количество подзадач: {props.task.subtasks.length}</p>
-        <button onClick={props.onDelete}>Delete</button>
+        <button onClick={props.onDelete}>Удалить задачу</button>
         <button onClick={() => setIsOpen(!isOpen)}>Добавить подзадачу</button>
 
         <input
