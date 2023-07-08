@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Dropdown } from "./Dropdown";
 import { TasksStore } from "./store/TasksStore";
 
 type InputProps = {};
 
 export function Input(props: InputProps) {
   const [text, setText] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
     <div>
@@ -19,11 +17,7 @@ export function Input(props: InputProps) {
       />
       <button
         onClick={() => {
-          TasksStore.addTask({
-            completed: false,
-            description: text,
-            subtasks: [],
-          });
+          TasksStore.addTask(text, null);
           setText("");
         }}
       >

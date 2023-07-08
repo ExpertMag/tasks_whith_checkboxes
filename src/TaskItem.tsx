@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Task, TasksStore } from "./store/TasksStore";
 import { observer } from "mobx-react-lite";
+import arrow from "./img/right_arrow_icon.svg";
 
 type Props = {
   task: Task;
@@ -9,23 +10,36 @@ type Props = {
 };
 
 export function TaskItem(props: Props) {
+  const [isDropdownOpened, setIsDropdownOpened] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
 
   return (
     <div className="taskItem">
-      <div className="task">
-        <p className="taskDescription">{props.task.description}</p>
-        <p>Количество подзадач: {props.task.subtasks.length}</p>
-        <button onClick={props.onDelete}>Удалить задачу</button>
-        <button onClick={() => setIsOpen(!isOpen)}>Добавить подзадачу</button>
-
-        <input
-          type="checkbox"
-          checked={props.task.completed}
-          onChange={props.onComplete}
+      <div
+        className="task"
+        onClick={() => setIsDropdownOpened(!isDropdownOpened)}
+      >
+        <img
+          src={arrow}
+          width={20}
+          className={"arrow " + (isDropdownOpened ? "rotated" : "")}
+          alt=""
         />
+        <p className="taskDescription">{props.task.description}</p>
+        <p>Количество подзадач: {props.task.subtasksIds.length}</p>
+        <div onClick={(event) => event.stopPropagation()}>
+          <button onClick={props.onDelete}>Удалить задачу</button>
+          <button onClick={() => setIsOpen(!isOpen)}>Добавить подзадачу</button>
+
+          <input
+            type="checkbox"
+            checked={props.task.completed}
+            onChange={props.onComplete}
+          />
+        </div>
       </div>
+
       {isOpen && (
         <div>
           <input
@@ -39,7 +53,8 @@ export function TaskItem(props: Props) {
           <button
             onClick={() => {
               if (props.task.id !== undefined) {
-                TasksStore.addSubTask(text, props.task.id);
+                console.log("props.task.id=", props.task.id);
+                TasksStore.addTask(text, props.task.id);
               }
             }}
           >
@@ -47,25 +62,33 @@ export function TaskItem(props: Props) {
           </button>
         </div>
       )}
-      <div>
-        {props.task.subtasks.map((subtask) => (
-          <div>
-            <TaskItem
-              task={subtask}
-              onDelete={() => {
-                if (subtask.id !== undefined) {
-                  TasksStore.deleteSubTask(subtask.id);
-                }
-              }}
-              onComplete={() => {
-                if (subtask.id !== undefined) {
-                  TasksStore.toggleCompleteSubTask(subtask.id);
-                }
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      {isDropdownOpened && (
+        <div>
+          {props.task.subtasksIds.map((id) => {
+            const subtask = TasksStore.getTaskById(id);
+            if (subtask === undefined) {
+              return null;
+            }
+            return (
+              <div>
+                <TaskItem
+                  task={subtask}
+                  onDelete={() => {
+                    if (subtask.id !== undefined) {
+                      TasksStore.removeTask(subtask.id);
+                    }
+                  }}
+                  onComplete={() => {
+                    if (subtask.id !== undefined) {
+                      TasksStore.toggleCompleteTask(subtask.id);
+                    }
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

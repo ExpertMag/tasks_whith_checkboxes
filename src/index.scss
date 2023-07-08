@@ -43,10 +43,19 @@ input[type="checkbox"] {
   gap: 20px;
   align-items: center;
   padding: 5px;
+  transition: all 0.3s ease 0s;
 }
 
 .task:hover {
   background-color: #cfdef3;
+}
+
+.arrow {
+  transition: all 0.3s ease 0s;
+}
+
+.rotated {
+  transform: rotate(90deg);
 }
 
 .taskDescription {

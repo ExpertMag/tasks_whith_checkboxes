@@ -1,4 +1,4 @@
-import TodoItem from "./TaskItem";
+import TaskItem from "./TaskItem";
 import { Task } from "./store/TasksStore";
 
 type Props = {
@@ -11,7 +11,7 @@ export function Tasks(props: Props) {
   return (
     <div className="taskList">
       {props.tasks.map((task) => (
-        <TodoItem
+        <TaskItem
           key={task.id}
           task={task}
           onComplete={() => {

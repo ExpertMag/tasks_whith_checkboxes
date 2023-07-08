@@ -1,46 +1,60 @@
-import { makeAutoObservable, remove } from "mobx";
+import { makeAutoObservable } from "mobx";
 
-export class Task {
+export type Task = {
   id?: number;
   description: string;
   completed: boolean;
-  subtasks: Task[];
-
-  constructor(id: number, description: string, subtasks: Task[]) {
-    this.id = id;
-    this.description = description;
-    this.completed = false;
-    this.subtasks = subtasks;
-  }
-}
+  subtasksIds: number[];
+  parentId: number | null;
+};
 
 class TaskList {
   tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-  private idCounter = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  addTask(task: Task) {
+  getTaskById(id: number): Task | undefined {
+    return this.tasks.find((task) => task.id === id);
+  }
+
+  updateLocalStorage() {
+    localStorage.setItem("tasks", JSON.stringify(this.tasks));
+  }
+
+  addTask(description: string, parentTaskId: number | null) {
     const newTask: Task = {
-      description: task.description,
-      completed: task.completed,
-      id: this.idCounter++,
-      subtasks: task.subtasks,
+      description: description,
+      completed: false,
+      id: this.tasks.length,
+      subtasksIds: [],
+      parentId: parentTaskId,
     };
 
     const updatedTasks = [...this.tasks];
+    if (parentTaskId !== null) {
+      const parent = updatedTasks.find((task) => task.id === parentTaskId);
+      parent?.subtasksIds.push(this.tasks.length);
+    }
     updatedTasks.push(newTask);
     this.tasks = updatedTasks;
 
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    this.updateLocalStorage();
   }
 
-  removeTask(id: number) {
-    const updatedTasks = this.tasks.filter((task) => task.id !== id);
+  removeTask(idToDelete: number) {
+    const updatedTasks = this.tasks.filter((task) => task.id !== idToDelete);
+
+    updatedTasks.forEach((task) => {
+      const idIndex = task.subtasksIds.findIndex((id) => id === idToDelete);
+      if (idIndex !== -1) {
+        task.subtasksIds.splice(idIndex, 1);
+      }
+    });
+
     this.tasks = updatedTasks;
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    this.updateLocalStorage();
   }
 
   toggleCompleteTask(id: number) {
@@ -49,49 +63,9 @@ class TaskList {
         task.completed = !task.completed;
       }
     });
+
+    this.updateLocalStorage();
   }
-
-  addSubTask(text: string, parentTaskId: number) {
-    const copy = [...this.tasks];
-    copy.forEach((task) => {
-      if (task.id === parentTaskId) {
-        const newTask: Task = {
-          description: text,
-          completed: false,
-          id: this.idCounter++,
-          subtasks: [],
-        };
-
-        task.subtasks.push(newTask);
-      }
-    });
-
-    this.tasks = copy;
-  }
-
-  deleteSubTask(id: number) {}
-  toggleCompleteSubTask(id: number) {}
 }
 
 export const TasksStore = new TaskList();
-
-const arr = [
-  {
-    completed: false,
-    description: "Parent",
-    subtasksIds: [2],
-    id: 1,
-  },
-  {
-    completed: false,
-    description: "Child",
-    subtasksIds: [],
-    id: 2,
-  },
-];
-
-function removeTask(id: number) {
-  return arr.filter((task) => task.id !== id);
-}
-
-removeTask(2);
