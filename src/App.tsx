@@ -1,37 +1,21 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TasksStore } from "./store/TasksStore";
-import TodoItem from "./TaskItem";
 import { Tasks } from "./Tasks";
+import { Input } from "./Input";
 
 function App() {
-  const [text, setText] = useState("");
-
   /*function chengeCheckbox() {
     setChecked(!checked);
   }*/
 
+  console.log(TasksStore.tasks);
+
   return (
     <div className="section">
-      <input
-        value={text}
-        onChange={(event) => {
-          setText(event.target.value);
-        }}
-      />
-      <button
-        onClick={() =>
-          TasksStore.addTask({
-            completed: false,
-            description: text,
-            subtasks: [],
-          })
-        }
-      >
-        Добавить новую задачу
-      </button>
+      <Input />
       <Tasks
-        onComplete={(id) => TasksStore.completedTask(id)}
+        onComplete={(id) => TasksStore.toggleCompleteTask(id)}
         onDelete={(id) => TasksStore.removeTask(id)}
         tasks={TasksStore.tasks}
       />

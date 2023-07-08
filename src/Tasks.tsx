@@ -9,9 +9,10 @@ type Props = {
 
 export function Tasks(props: Props) {
   return (
-    <div>
+    <div className="taskList">
       {props.tasks.map((task) => (
         <TodoItem
+          key={task.id}
           task={task}
           onComplete={() => {
             if (task.id !== undefined) {
