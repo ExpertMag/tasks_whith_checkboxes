@@ -55,6 +55,7 @@ export function TaskItem(props: Props) {
               if (props.task.id !== undefined) {
                 console.log("props.task.id=", props.task.id);
                 TasksStore.addTask(text, props.task.id);
+                setText("");
               }
             }}
           >
