@@ -71,7 +71,7 @@ export function TaskItem(props: Props) {
               return null;
             }
             return (
-              <div>
+              <div key={subtask.id}>
                 <TaskItem
                   task={subtask}
                   onDelete={() => {
