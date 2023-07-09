@@ -1,7 +1,7 @@
 {
-  "homepage": "https://expertmag.github.io/",
   "name": "tasks_whith_checkboxes",
   "version": "0.1.0",
+  "homepage": "https://expertmag.github.io/tasks_whith_checkboxes",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -21,6 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -43,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
