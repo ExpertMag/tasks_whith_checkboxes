@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/tasks_whith_checkboxes/static/css/main.77004b57.css",
+    "main.js": "/tasks_whith_checkboxes/static/js/main.bbf16435.js",
+    "index.html": "/tasks_whith_checkboxes/index.html",
+    "static/media/right_arrow_icon.svg": "/tasks_whith_checkboxes/static/media/right_arrow_icon.50703ef55bbe55adf8ce0d08b781b8e9.svg",
+    "main.77004b57.css.map": "/tasks_whith_checkboxes/static/css/main.77004b57.css.map",
+    "main.bbf16435.js.map": "/tasks_whith_checkboxes/static/js/main.bbf16435.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.77004b57.css",
+    "static/js/main.bbf16435.js"
+  ]
+}
