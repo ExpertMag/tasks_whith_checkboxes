@@ -30,7 +30,7 @@
 
 Ваше приложение готово к развертыванию!
 
-Дополнительную информацию см. в разделе о [ развертывании ] (https://facebook.github.io/create-react-app/docs/deployment) .
+Дополнительную информацию см. в разделе о [ развертывании ](https://facebook.github.io/create-react-app/docs/deployment) .
 
 ### `npm run eject`
 
